@@ -9,7 +9,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "laracasts/flash": "^3.0",
         "laravel/framework": "5.3.*",
-        "naux/sendcloud": "1.1.*"
+        "naux/sendcloud": "1.1.*",
+        "overtrue/laravel-lang": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
