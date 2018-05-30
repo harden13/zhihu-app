@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
 use App\Question;
+use App\Topic;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -42,7 +43,7 @@ class QuestionsController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        dd($request->get('topics'));
+        $topics = $this->normalizeTopic($request->get('topics'));
         $data = [
             'title'=>$request->get('title'),
             'body'=>$request->get('body'),
@@ -50,6 +51,8 @@ class QuestionsController extends Controller
         ];
 
         $question = Question::create($data);
+
+        $question->topics()->attach($topics);
         return redirect()->route('questions.show', ['id'=>$question->id]);
     }
 
@@ -61,7 +64,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::findOrFail($id);
+        $question = Question::where('id', $id)->with('topics')->first();
         return view('questions.show', compact('question'));
     }
 
@@ -97,5 +100,27 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * 标签检查
+     * @param array $topics
+     * @return array
+     */
+    private function normalizeTopic(array $topics)
+    {
+        $ids = Topic::pluck('id');
+
+        $ids = collect($topics)->map(function ($topic) use ($ids){
+            if (is_numeric($topic) && $ids->contains($topic)) {
+                //如果是数字，并且数据库中存在记录
+                return (int) $topic;
+            } else {
+                //如果是数字，并且数据库中不存在记录或者不是数字
+                return Topic::create(['name'=>$topic])->id;
+            }
+        })->toArray();
+        Topic::whereIn('id', $ids)->increment('questions_count');
+        return $ids;
     }
 }
