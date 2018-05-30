@@ -22,4 +22,9 @@ class Question extends Model
     {
         return $query->where('is_hidden', 'F');
     }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }
