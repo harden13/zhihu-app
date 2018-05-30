@@ -44,4 +44,9 @@ class QuestionRepository
         Topic::whereIn('id', $ids)->increment('questions_count');
         return $ids;
     }
+
+    public function byId($id)
+    {
+        return Question::findOrFail($id);
+    }
 }
