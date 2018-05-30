@@ -49,4 +49,9 @@ class QuestionRepository
     {
         return Question::findOrFail($id);
     }
+
+    public function getQuestionsFeed()
+    {
+        return Question::published()->latest('updated_at')->with('user')->get();
+    }
 }
