@@ -12,7 +12,8 @@
                             {!! csrf_field() !!}
                             <div class="form-group{{ $errors->has('title') ? 'har-error' : '' }}">
                                 <label for="title">标题</label>
-                                <input value="{{old('title')}}" type="text" name="title" class="form-control" placeholder="标题" id="title">
+                                <input value="{{old('title')}}" type="text" name="title" class="form-control"
+                                       placeholder="标题" id="title">
                                 @if($errors->has('title'))
                                     <span class="help-block">
                                         <strong>{{$errors->first('title')}}</strong>
@@ -20,12 +21,14 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <select name="topics[]" class="js-example-placeholder-multiple js-data-example-ajax form-control" multiple="multiple">
+                                <select name="topics[]"
+                                        class="js-example-placeholder-multiple js-data-example-ajax form-control"
+                                        multiple="multiple">
                                 </select>
                             </div>
                             <div class="form-group{{ $errors->has('body') ? 'har-error' : '' }}">
                                 <label for="body">描述</label>
-                                <script id="container" style="height: 200px;" name="body" type="text/plain">{!! old('body') !!}</script>
+                                <script id="container" name="body" type="text/plain" style="height: 200px;">{!! old('body') !!}</script>
                                 @if($errors->has('body'))
                                     <span class="help-block">
                                         <strong>{{$errors->first('body')}}</strong>
@@ -39,26 +42,26 @@
             </div>
         </div>
     </div>
-    @section('js')
+@section('js')
     <!-- 实例化编辑器 -->
     <script type="text/javascript">
         var ue = UE.getEditor('container',
             {
                 toolbars: [
-                    ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft','justifycenter', 'justifyright',  'link', 'insertimage', 'fullscreen']
+                    ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'insertimage', 'fullscreen']
                 ],
                 elementPathEnabled: false,
                 enableContextMenu: false,
-                autoClearEmptyNode:true,
-                wordCount:false,
-                imagePopup:false,
-                autotypeset:{ indent: true,imageBlockLine: 'center' }
+                autoClearEmptyNode: true,
+                wordCount: false,
+                imagePopup: false,
+                autotypeset: {indent: true, imageBlockLine: 'center'}
             });
-        ue.ready(function() {
+        ue.ready(function () {
             ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
         $(document).ready(function () {
-            function formatTopic (topic) {
+            function formatTopic(topic) {
 
                 return "<div class='select2-result-repository clearfix'>" +
 
@@ -66,14 +69,14 @@
 
                 "<div class='select2-result-repository__title'>" +
 
-                topic.name ? topic.name : "Laravel"   +
+                topic.name ? topic.name : "Laravel" +
 
                     "</div></div></div>";
 
             }
 
 
-            function formatTopicSelection (topic) {
+            function formatTopicSelection(topic) {
 
                 return topic.name || topic.text;
 
@@ -124,12 +127,14 @@
 
                 templateSelection: formatTopicSelection,
 
-                escapeMarkup: function (markup) { return markup; }
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
 
             });
         });
     </script>
-    @endsection('js')
+@endsection('js')
 @endsection
 
 

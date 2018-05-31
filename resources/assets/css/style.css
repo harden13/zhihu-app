@@ -20,7 +20,7 @@ a.topic:hover {
     padding: 10px 20px;
 }
 
-.panel-body img {
+.panel-body.content img {
     width: 100%;
 }
 
