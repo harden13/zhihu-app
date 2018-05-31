@@ -22,3 +22,5 @@ Route::get('email/verify/{token}', ['as'=>'email.verify', 'uses' => 'EmailContro
 Route::resource('questions', 'QuestionsController');
 
 Route::post('/question/{question}/answer', 'AnswersController@store');
+
+Route::get('/question/{question}/follow', 'QuestionFollowController@follow');
