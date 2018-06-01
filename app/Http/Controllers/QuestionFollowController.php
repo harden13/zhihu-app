@@ -10,7 +10,7 @@ class QuestionFollowController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function follow($question)
     {
         Auth::user()->followThis($question);
