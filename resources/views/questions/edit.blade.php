@@ -1,6 +1,6 @@
 @extends('layouts.app')
+@include('vendor.ueditor.assets')
 @section('content')
-    @include('vendor.ueditor.assets')
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -13,7 +13,8 @@
                             {!! csrf_field() !!}
                             <div class="form-group{{ $errors->has('title') ? 'har-error' : '' }}">
                                 <label for="title">标题</label>
-                                <input value="{{$question->title}}" type="text" name="title" class="form-control" placeholder="标题" id="title">
+                                <input value="{{$question->title}}" type="text" name="title" class="form-control"
+                                       placeholder="标题" id="title">
                                 @if($errors->has('title'))
                                     <span class="help-block">
                                         <strong>{{$errors->first('title')}}</strong>
@@ -21,118 +22,122 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <select name="topics[]" class="js-example-placeholder-multiple js-data-example-ajax form-control" multiple="multiple">
+                                <select name="topics[]"
+                                        class="js-example-placeholder-multiple js-data-example-ajax form-control"
+                                        multiple="multiple">
                                     @foreach($question->topics as $topic)
-                                    <option value="{{$topic->id}}" selected="selected">{{$topic->name}}</option>
+                                        <option value="{{$topic->id}}" selected="selected">{{$topic->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group{{ $errors->has('body') ? 'har-error' : '' }}">
                                 <label for="body">描述</label>
-                                <script id="container" style="height: 200px;" name="body" type="text/plain">{!! $question->body !!}</script>
+                                <script id="container" style="width: 200px" name="body" type="text/plain">{!! $question->body !!}</script>
                                 @if($errors->has('body'))
-                                <span class="help-block">
+                                    <span class="help-block">
                                     <strong>{{$errors->first('body')}}</strong>
                                     </span>
-                                        @endif
-                                    </div>
-                                    <button class="btn btn-success pull-right" type="submit">发布问题</button>
-                                    </form>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                        @section('js')
-                                    <!-- 实例化编辑器 -->
-                                    <script type="text/javascript">
-                                var ue = UE.getEditor('container',
-                                    {
-                                        toolbars: [
-                                            ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft','justifycenter', 'justifyright',  'link', 'insertimage', 'fullscreen']
-                                        ],
-                                        elementPathEnabled: false,
-                                        enableContextMenu: false,
-                                        autoClearEmptyNode:true,
-                                        wordCount:false,
-                                        imagePopup:false,
-                                        autotypeset:{ indent: true,imageBlockLine: 'center' }
-                                    });
-                                ue.ready(function() {
-                                    ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
-                                });
-                                $(document).ready(function () {
-                                    function formatTopic (topic) {
+                                @endif
+                            </div>
+                            <button class="btn btn-success pull-right" type="submit">发布问题</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@section('js')
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('container',
+            {
+                toolbars: [
+                    ['bold', 'italic', 'underline', 'strikethrough', 'blockquote', 'insertunorderedlist', 'insertorderedlist', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'insertimage', 'fullscreen']
+                ],
+                elementPathEnabled: false,
+                enableContextMenu: false,
+                autoClearEmptyNode: true,
+                wordCount: false,
+                imagePopup: false,
+                autotypeset: {indent: true, imageBlockLine: 'center'}
+            });
+        ue.ready(function () {
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
+        });
+        $(document).ready(function () {
+            function formatTopic(topic) {
 
-                                        return "<div class='select2-result-repository clearfix'>" +
+                return "<div class='select2-result-repository clearfix'>" +
 
-                                        "<div class='select2-result-repository__meta'>" +
+                "<div class='select2-result-repository__meta'>" +
 
-                                        "<div class='select2-result-repository__title'>" +
+                "<div class='select2-result-repository__title'>" +
 
-                                        topic.name ? topic.name : "Laravel"   +
+                topic.name ? topic.name : "Laravel" +
 
-                                            "</div></div></div>";
+                    "</div></div></div>";
 
-                                    }
-
-
-                                    function formatTopicSelection (topic) {
-
-                                        return topic.name || topic.text;
-
-                                    }
+            }
 
 
-                                    $(".js-example-placeholder-multiple").select2({
+            function formatTopicSelection(topic) {
 
-                                        tags: true,
+                return topic.name || topic.text;
 
-                                        placeholder: '选择相关话题',
+            }
 
-                                        minimumInputLength: 2,
 
-                                        ajax: {
+            $(".js-example-placeholder-multiple").select2({
 
-                                            url: '/api/topics',
+                tags: true,
 
-                                            dataType: 'json',
+                placeholder: '选择相关话题',
 
-                                            delay: 250,
+                minimumInputLength: 2,
 
-                                            data: function (params) {
+                ajax: {
 
-                                                return {
+                    url: '/api/topics',
 
-                                                    q: params.term
+                    dataType: 'json',
 
-                                                };
+                    delay: 250,
 
-                                            },
+                    data: function (params) {
 
-                                            processResults: function (data, params) {
+                        return {
 
-                                                return {
+                            q: params.term
 
-                                                    results: data
+                        };
 
-                                                };
+                    },
 
-                                            },
+                    processResults: function (data, params) {
 
-                                            cache: true
+                        return {
 
-                                        },
+                            results: data
 
-                                        templateResult: formatTopic,
+                        };
 
-                                        templateSelection: formatTopicSelection,
+                    },
 
-                                        escapeMarkup: function (markup) { return markup; }
+                    cache: true
 
-                                    });
-                                });
-                                </script>
+                },
+
+                templateResult: formatTopic,
+
+                templateSelection: formatTopicSelection,
+
+                escapeMarkup: function (markup) {
+                    return markup;
+                }
+
+            });
+        });
+    </script>
 @endsection('js')
 @endsection
 
