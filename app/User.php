@@ -30,6 +30,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * 发送验证邮件
+     * @param string $token
+     */
     public function sendPasswordResetNotification($token)
     {
         // 模板变量
@@ -46,28 +50,61 @@ class User extends Authenticatable
         });
     }
 
+    /**
+     * 判断用户是否是该问题的所有者
+     * @param Model $model
+     * @return bool
+     */
     public function owns(Model $model)
     {
         return $this->id == $model->user_id;
     }
 
+    /**
+     * 返回用户的所有答案
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answers()
     {
         return $this->hasMany(Answer::class);
     }
 
+    /**
+     * 返回用户关注的所有问题
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function follows()
     {
         return $this->belongsToMany(Question::class, 'user_question')->withTimestamps();
     }
 
+    /**
+     * 关注某个问题
+     * @param $question
+     * @return array
+     */
     public function followThis($question)
     {
         return $this->follows()->toggle($question);
     }
 
+    /**
+     * 判断用户是否关注过该问题
+     * @param $question
+     * @return bool
+     */
     public function followed($question)
     {
         return !! $this->follows()->where('question_id', $question)->count();
     }
+
+    /**
+     * 返回用户关注的所有用户
+     * @return mixed
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+    
 }
