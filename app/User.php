@@ -106,5 +106,24 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
     }
+
+    /**
+     * 判断用户是否关注过
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followersUser()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * 关注用户
+     * @param $user
+     * @return mixed
+     */
+    public function followThisUser($user)
+    {
+        return $this->followers()->toggle($user);
+    }
     
 }
