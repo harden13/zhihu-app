@@ -116,4 +116,32 @@ class User extends Authenticatable
         return $this->followers()->toggle($user);
     }
 
+    /**
+     * 返回该用户的所有点赞
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function votes()
+    {
+        return $this->belongsToMany(Answer::class, 'votes')->withTimestamps();
+    }
+
+    /**
+     * 对回答进行点赞
+     * @param $answer
+     * @return array
+     */
+    public function voteFor($answer)
+    {
+        return $this->votes()->toggle($answer);
+    }
+
+    /**
+     * 判断用户对某个问题是否点赞
+     * @param $answer
+     * @return bool
+     */
+    public function hasVotedFor($answer)
+    {
+        return !! $this->votes()->where('answer_id', $answer)->count();
+    }
 }
