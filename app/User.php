@@ -144,4 +144,13 @@ class User extends Authenticatable
     {
         return !! $this->votes()->where('answer_id', $answer)->count();
     }
+
+    /**
+     * 获取用户的私信列表
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'to_user_id');
+    }
 }
