@@ -16,6 +16,12 @@ class AnswersController extends Controller
         $this->answerRepository = $answerRepository;
     }
 
+    /**
+     * @param StoreAnswerRequest $request
+     * @param $question
+     * @return \Illuminate\Http\RedirectResponse
+     * 保存用户对问题的评论
+     */
     public function store(StoreAnswerRequest $request, $question)
     {
         $answer = $this->answerRepository->create([
