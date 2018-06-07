@@ -12,6 +12,10 @@ namespace App\Repositories;
 use App\Question;
 use App\Topic;
 
+/**
+ * Class QuestionRepository
+ * @package App\Repositories
+ */
 class QuestionRepository
 {
     /**
@@ -23,11 +27,19 @@ class QuestionRepository
         return Question::where('id', $id)->with(['topics', 'answers'])->first();
     }
 
+    /**
+     * @param array $attributes
+     * @return static
+     */
     public function create(array $attributes)
     {
         return Question::create($attributes);
     }
 
+    /**
+     * @param array $topics
+     * @return array
+     */
     public function normalizeTopic(array $topics)
     {
         $ids = Topic::pluck('id');
@@ -45,13 +57,29 @@ class QuestionRepository
         return $ids;
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function byId($id)
     {
         return Question::findOrFail($id);
     }
 
+    /**
+     * @return mixed
+     */
     public function getQuestionsFeed()
     {
         return Question::published()->latest('updated_at')->with('user')->get();
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     */
+    public function getQuestionCommentsById($id)
+    {
+        return Question::with('comments', 'comments.user')->where('id', $id)->first();
     }
 }
