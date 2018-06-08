@@ -66,6 +66,10 @@ class QuestionsController extends Controller
         ];
 
         $question = $this->questionRepository->create($data);
+        user()->followThis($question->id); //楼主自动关注该问题
+        user()->increment('questions_count');
+        user()->increment('favorites_count');
+//        $question->increment('followers_count');
 
         $question->topics()->attach($topics);
         return redirect()->route('questions.show', ['id'=>$question->id]);

@@ -45,7 +45,6 @@
             <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading question-follow">
-                        <h2>{{$question->followers_count}}</h2>
                         <span>关于作者</span>
                     </div>
                     <div class="panel-body">

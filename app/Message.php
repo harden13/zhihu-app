@@ -18,7 +18,7 @@ class Message extends Model
     /**
      * @var array
      */
-    protected $fillable = ['from_user_id', 'to_user_id', 'body'];
+    protected $fillable = ['from_user_id', 'to_user_id', 'body', 'dialog_id'];
 
     /**
      * 获取私信的发件人

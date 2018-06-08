@@ -21,13 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('avatar'); //头像
             $table->string('confirmation_token'); //激活token
             $table->smallInteger('is_active')->default(0); //是否激活
-            $table->integer('questions_count')->default(0); //问题数
-            $table->integer('answers_count')->default(0); //回答数
-            $table->integer('comments_count')->default(0); //评论数
+            $table->integer('questions_count')->default(0); //发表的问题数
+            $table->integer('answers_count')->default(0); //用户提交的回答数
+            $table->integer('comments_count')->default(0); //用户发表的评论数
             $table->integer('favorites_count')->default(0); //收藏数
-            $table->integer('likes_count')->default(0);
+            $table->integer('likes_count')->default(0); //点赞数
             $table->integer('followers_count')->default(0); //关注数
-            $table->integer('followings_count')->default(0); //被关注数
+            $table->integer('followings_count')->default(0); //粉丝数，被关注
             $table->json('settings')->nullable(); //用户信息
             $table->rememberToken();
             $table->timestamps();

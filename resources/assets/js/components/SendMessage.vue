@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-default pull-right" style="margin-top: 36px" @click="showSendMessageForm">发送私信</button>
+        <button class="btn btn-default pull-right" style="margin-top: -36px" @click="showSendMessageForm">发送私信</button>
         <div class="modal fade" id="modal-send-message" tabindex="-1" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
