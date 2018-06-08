@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Repositories\MessageRepository;
 
+/**
+ * Class MessagesController
+ * @package App\Http\Controllers
+ */
 class MessagesController extends Controller
 {
+    /**
+     * @var MessageRepository
+     */
     protected $message;
 
     /**
@@ -26,7 +32,7 @@ class MessagesController extends Controller
     {
         $message = $this->message->create([
             'to_user_id' => request('user'),
-            'from_user_id' => Auth::guard('api')->user()->id,
+            'from_user_id' => user('api')->id,
             'body' => request('body')
         ]);
         if ($message) {

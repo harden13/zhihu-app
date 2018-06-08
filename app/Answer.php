@@ -4,8 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Answer
+ * @package App
+ */
 class Answer extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = ['user_id', 'question_id', 'body'];
 
     /**

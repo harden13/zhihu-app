@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Answer;
 use App\Repositories\AnswerRepository;
-use Auth;
 
+/**
+ * Class VotesController
+ * @package App\Http\Controllers
+ */
 class VotesController extends Controller
 {
+    /**
+     * @var AnswerRepository
+     */
     protected $answer;
 
     /**
@@ -19,15 +24,24 @@ class VotesController extends Controller
         $this->answer = $answer;
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * 返回用户是否对该回答进行点赞
+     */
     public function users($id)
     {
-        $user = Auth::guard('api')->user();
+        $user = user('api');
         return response()->json(['voted' => $user->hasVotedFor($id)]);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * 对回答进行点赞
+     */
     public function vote()
     {
-        $user = Auth::guard('api')->user();
+        $user = user('api');
         $answer = $this->answer->byId(request('answer'));
         $voted = $user->voteFor($answer->id);
         if (count($voted['attached'])) {

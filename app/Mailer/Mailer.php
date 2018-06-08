@@ -12,8 +12,18 @@ namespace App\Mailer;
 use Naux\Mail\SendCloudTemplate;
 use Mail;
 
+/**
+ * Class Mailer
+ * @package App\Mailer
+ */
 class Mailer
 {
+    /**
+     * @param $template
+     * @param $email
+     * @param $data
+     * 发送邮件
+     */
     protected function sendTo($template, $email, $data)
     {
 

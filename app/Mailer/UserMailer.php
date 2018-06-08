@@ -10,7 +10,6 @@ namespace App\Mailer;
 
 
 use App\User;
-use Auth;
 class UserMailer extends Mailer
 {
     /**
@@ -19,7 +18,7 @@ class UserMailer extends Mailer
      */
     public function followNotifyEmail($email)
     {
-        $data = ['url' => '127.0.0.1:8000', 'name' => Auth::guard('api')->user()->name];
+        $data = ['url' => '127.0.0.1:8000', 'name' => user('api')->name];
         $this->sendTo('zhihu_app_new_user_follow', $email, $data);
     }
 
@@ -46,6 +45,4 @@ class UserMailer extends Mailer
         ];
         $this->sendTo('zhihuRegister', $user->email, $data);
     }
-
-
 }

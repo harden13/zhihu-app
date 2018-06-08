@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAnswerRequest;
 use App\Repositories\AnswerRepository;
-use Auth;
 
+/**
+ * Class AnswersController
+ * @package App\Http\Controllers
+ */
 class AnswersController extends Controller
 {
 
+    /**
+     * @var AnswerRepository
+     */
     protected $answerRepository;
 
+    /**
+     * AnswersController constructor.
+     * @param AnswerRepository $answerRepository
+     */
     public function __construct(AnswerRepository $answerRepository)
     {
         $this->answerRepository = $answerRepository;
@@ -26,7 +36,7 @@ class AnswersController extends Controller
     {
         $answer = $this->answerRepository->create([
            'question_id' => $question,
-            'user_id' => Auth::id(),
+            'user_id' => user()->id,
             'body' => $request->get('body')
         ]);
 

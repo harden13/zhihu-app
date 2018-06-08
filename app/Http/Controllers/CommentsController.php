@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Repositories\AnswerRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\QuestionRepository;
-use Auth;
 
 /**
  * Class CommentsController
@@ -43,6 +42,7 @@ class CommentsController extends Controller
     /**
      * @param $id
      * @return mixed
+     * 返回该回答的评论
      */
     public function answer($id)
     {
@@ -53,6 +53,7 @@ class CommentsController extends Controller
     /**
      * @param $id
      * @return mixed
+     * 返回该问题的评论
      */
     public function question($id)
     {
@@ -62,6 +63,7 @@ class CommentsController extends Controller
 
     /**
      * @return static
+     * 保存对问题或者回答的评论
      */
     public function store()
     {
@@ -69,7 +71,7 @@ class CommentsController extends Controller
         return $this->comment->create([
             'commentable_id' => request('model'),
             'commentable_type' => $model,
-            'user_id' => Auth::guard('api')->user()->id,
+            'user_id' => user('api')->id,
             'body' => request('body')
         ]);
     }

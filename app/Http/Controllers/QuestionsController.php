@@ -4,13 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
 use App\Repositories\QuestionRepository;
-use Illuminate\Http\Request;
-use Auth;
 
+/**
+ * Class QuestionsController
+ * @package App\Http\Controllers
+ */
 class QuestionsController extends Controller
 {
+    /**
+     * @var QuestionRepository
+     */
     protected $questionRepository;
 
+    /**
+     * QuestionsController constructor.
+     * @param QuestionRepository $questionRepository
+     */
     public function __construct(QuestionRepository $questionRepository)
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -21,6 +30,7 @@ class QuestionsController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 问题列表页
      */
     public function index()
     {
@@ -32,6 +42,7 @@ class QuestionsController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * 发布问题页面
      */
     public function create()
     {
@@ -43,6 +54,7 @@ class QuestionsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 保存问题
      */
     public function store(StoreQuestionRequest $request)
     {
@@ -50,7 +62,7 @@ class QuestionsController extends Controller
         $data = [
             'title'=>$request->get('title'),
             'body'=>$request->get('body'),
-            'user_id'=>Auth::id()
+            'user_id'=>user()->id
         ];
 
         $question = $this->questionRepository->create($data);
@@ -64,6 +76,7 @@ class QuestionsController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 展示问题
      */
     public function show($id)
     {
@@ -76,11 +89,12 @@ class QuestionsController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 编辑页面
      */
     public function edit($id)
     {
         $question = $this->questionRepository->byId($id);
-        if (Auth::user()->owns($question)) {
+        if (user()->owns($question)) {
             return view('questions.edit', compact('question'));
         }
         return back();
@@ -92,6 +106,7 @@ class QuestionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 修改问题
      */
     public function update(StoreQuestionRequest $request, $id)
     {
@@ -115,7 +130,7 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         $question = $this->questionRepository->byId($id);
-        if (Auth::user()->owns($question)) {
+        if (user()->owns($question)) {
             $question->delete();
             return redirect('/');
         }

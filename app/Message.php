@@ -4,10 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Message
+ * @package App
+ */
 class Message extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'messages';
 
+    /**
+     * @var array
+     */
     protected $fillable = ['from_user_id', 'to_user_id', 'body'];
 
     /**

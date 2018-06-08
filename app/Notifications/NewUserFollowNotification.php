@@ -12,6 +12,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Naux\Mail\SendCloudTemplate;
 use Mail;
 
+/**
+ * Class NewUserFollowNotification
+ * @package App\Notifications
+ */
 class NewUserFollowNotification extends Notification
 {
     use Queueable;
@@ -53,14 +57,19 @@ class NewUserFollowNotification extends Notification
 
     /**
      * @return array
+     * 用户关注本地通知
      */
     public function toDatabase()
     {
         return [
-            'name' => Auth::guard('api')->user()->name,
+            'name' => user('api')->name,
         ];
     }
 
+    /**
+     * @param $notifiable
+     * 用户关注邮件通知
+     */
     public function toSendcloud($notifiable)
     {
         (new UserMailer())->followNotifyEmail($notifiable->email);
