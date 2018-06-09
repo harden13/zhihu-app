@@ -13,11 +13,11 @@
                                 <div class="media-left">
                                     @if(user()->id == $key)
                                         <a href="">
-                                            <img width="45px" src="{{$messageGroup->first()->fromUser->avatar}}">
+                                            <img width="45px" src="{{$messageGroup->last()->fromUser->avatar}}">
                                         </a>
                                     @else
                                         <a href="">
-                                            <img width="45px" src="{{$messageGroup->first()->toUser->avatar}}">
+                                            <img width="45px" src="{{$messageGroup->last()->toUser->avatar}}">
                                         </a>
                                     @endif
                                 </div>
@@ -25,11 +25,11 @@
                                     <h4 class="media-heading">
                                         @if(user()->id == $key)
                                             <a href="">
-                                                {{$messageGroup->first()->fromUser->name}}
+                                                {{$messageGroup->last()->fromUser->name}}
                                             </a>
                                         @else
                                             <a href="">
-                                                {{$messageGroup->first()->toUser->name}}
+                                                {{$messageGroup->last()->toUser->name}}
                                             </a>
                                         @endif
                                     </h4>
