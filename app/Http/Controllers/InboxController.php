@@ -19,36 +19,42 @@ class InboxController extends Controller
         $this->middleware('auth');
     }
 
-//    public function index()
-//    {
-//        $messages = Message::where('to_user_id', user()->id)
-//            ->orWhere('from_user_id', user()->id)
-//            ->with('fromUser', 'toUser')
-//            ->get();
-//        return view('inbox.index', ['messages' => $messages->unique('dialog_id')->groupBy('from_user_id')]);
-//    }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 私信首页
      */
+
     public function index()
     {
-        $userId = user()->id;
-
-        $msgIds = Message::selectRaw('max(id) as id')
-            ->where('from_user_id', $userId)
-            ->orWhere('to_user_id', $userId)
-            ->groupBy('dialog_id')
-            ->pluck('id')
-            ->toArray();
-
-        $messages = Message::with('toUser', 'fromUser')
-            ->whereIn('id', $msgIds)
+        $messages = Message::where('to_user_id', user()->id)
+            ->orWhere('from_user_id', user()->id)
+            ->with(['fromUser' => function ($query) {
+                return $query->select(['id', 'name', 'avatar']);
+            }, 'toUser' => function ($query) {
+                return $query->select(['id', 'name', 'avatar']);
+            }])
+            ->latest()
             ->get();
-
-        return view('inbox.index', ['messages' => $messages->keyBy('to_user_id')]);
+        return view('inbox.index', ['messages' => $messages->groupBy('dialog_id')]);
     }
+//    public function index()
+//    {
+//        $userId = user()->id;
+//
+//        $msgIds = Message::selectRaw('max(id) as id')
+//            ->where('from_user_id', $userId)
+//            ->orWhere('to_user_id', $userId)
+//            ->groupBy('dialog_id')
+//            ->pluck('id')
+//            ->toArray();
+//
+//        $messages = Message::with('toUser', 'fromUser')
+//            ->whereIn('id', $msgIds)
+//            ->get();
+//
+//        return view('inbox.index', ['messages' => $messages->keyBy('to_user_id')]);
+//    }
 
     /**
      * @param $dialogId
@@ -57,7 +63,13 @@ class InboxController extends Controller
      */
     public function show($dialogId)
     {
-        $messages = Message::where('dialog_id', $dialogId)->latest()->get();
+        $messages = Message::where('dialog_id', $dialogId)
+            ->with(['fromUser' => function ($query) {
+                return $query->select(['id', 'name', 'avatar']);
+            }, 'toUser' => function ($query) {
+                return $query->select(['id', 'name', 'avatar']);
+            }])
+            ->latest()->get();
         $messages->markAsRead();
         return view('inbox.show', compact('messages', 'dialogId'));
     }
@@ -72,10 +84,10 @@ class InboxController extends Controller
         $message = Message::where('dialog_id', $dialogId)->first();
         $to_user_id = user()->id === $message->to_user_id ? $message->from_user_id : $message->to_user_id;
         Message::create([
-            'to_user_id'=>$to_user_id,
-            'from_user_id'=>user()->id,
-            'body'=>request('body'),
-            'dialog_id'=>$dialogId
+            'to_user_id' => $to_user_id,
+            'from_user_id' => user()->id,
+            'body' => request('body'),
+            'dialog_id' => $dialogId
         ]);
         return back();
 
