@@ -13,11 +13,11 @@
                                 <div class="media-left">
                                     @if(user()->id == $key)
                                         <a href="">
-                                            <img width="45px" src="{{$messageGroup->last()->fromUser->avatar}}">
+                                            <img width="45px" src="{{$messageGroup->fromUser->avatar}}">
                                         </a>
                                     @else
                                         <a href="">
-                                            <img width="45px" src="{{$messageGroup->last()->toUser->avatar}}">
+                                            <img width="45px" src="{{$messageGroup->toUser->avatar}}">
                                         </a>
                                     @endif
                                 </div>
@@ -25,16 +25,16 @@
                                     <h4 class="media-heading">
                                         @if(user()->id == $key)
                                             <a href="">
-                                                {{$messageGroup->last()->fromUser->name}}
+                                                {{$messageGroup->fromUser->name}}
                                             </a>
                                         @else
                                             <a href="">
-                                                {{$messageGroup->last()->toUser->name}}
+                                                {{$messageGroup->toUser->name}}
                                             </a>
                                         @endif
                                     </h4>
-                                    <p><a href="/inbox/{{$messageGroup->last()->dialog_id}}">
-                                            {{$messageGroup->last()->body}}
+                                    <p><a href="/inbox/{{$messageGroup->dialog_id}}">
+                                            {{$messageGroup->body}}
                                         </a></p>
                                 </div>
                             </div>

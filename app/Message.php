@@ -37,4 +37,26 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'to_user_id');
     }
+
+    /**
+     * 私信标记为已读
+     */
+    public function markAsRead()
+    {
+        if (is_null($this->read_at)) {
+            $this->forceFill([
+                'has_read' => 'T',
+                'read_at' => $this->freshTimestamp()
+            ])->save();
+        }
+    }
+
+    /**
+     * @param array $models
+     * @return MessageCollection
+     */
+    public function newCollection(array $models =[])
+    {
+        return new MessageCollection($models);
+    }
 }
