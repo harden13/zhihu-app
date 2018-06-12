@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Message;
+use App\Notifications\NewMessageNotification;
 use App\Repositories\MessageRepository;
 use Illuminate\Http\Request;
 
@@ -73,13 +73,13 @@ class InboxController extends Controller
     {
         $message = $this->message->getSingleMessageById($dialogId);
         $to_user_id = user()->id === $message->to_user_id ? $message->from_user_id : $message->to_user_id;
-        $this->message->create([
+        $newMessage = $this->message->create([
             'to_user_id' => $to_user_id,
             'from_user_id' => user()->id,
             'body' => request('body'),
             'dialog_id' => $dialogId
         ]);
+        $newMessage->toUser->notify(new NewMessageNotification($newMessage));
         return back();
-
     }
 }
