@@ -31,3 +31,5 @@ Route::get('/notifications/{notificationId}', 'NotificationsController@show');
 Route::get('/inbox', 'InboxController@index');
 Route::get('/inbox/{dialogId}', 'InboxController@show');
 Route::post('/inbox/{dialogId}/store', 'InboxController@store');
+
+Route::get('/avatar', 'UsersController@avatar');
