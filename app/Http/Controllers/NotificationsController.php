@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 
 /**
@@ -17,5 +19,11 @@ class NotificationsController extends Controller
     {
         $user = user();
         return view('notifications.index', compact('user'));
+    }
+
+    public function show(DatabaseNotification $notificationId)
+    {
+        $notificationId->markAsRead();
+        return redirect(\Request::query('redirect_url'));
     }
 }
