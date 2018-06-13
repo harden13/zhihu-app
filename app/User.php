@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar', 'confirmation_token', 'api_token'
+        'name', 'email', 'password', 'avatar', 'confirmation_token', 'api_token', 'settings'
     ];
 
     /**
@@ -32,6 +32,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = ['settings' => 'array'];
 
     /**
      * 发送验证邮件
@@ -144,7 +146,7 @@ class User extends Authenticatable
      */
     public function hasVotedFor($answer)
     {
-        return !! $this->votes()->where('answer_id', $answer)->count();
+        return !!$this->votes()->where('answer_id', $answer)->count();
     }
 
     /**
