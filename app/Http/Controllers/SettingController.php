@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * Class SettingController
+ * @package App\Http\Controllers
+ */
 class SettingController extends Controller
 {
 
@@ -16,15 +20,23 @@ class SettingController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 更新用户资料
+     */
     public function index()
     {
         return view('users.setting');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * 保存用户资料
+     */
     public function store(Request $request)
     {
-        $settings = array_merge(user()->settings, array_only($request->all(), ['city', 'bio']));
-        user()->update(['settings' => $settings]);
+        user()->setting()->merge($request->all());
         flash('修改成功', 'success');
         return back();
     }

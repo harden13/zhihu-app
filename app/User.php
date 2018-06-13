@@ -33,7 +33,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * @var array
+     * 设置用户信息
+     */
     protected $casts = ['settings' => 'array'];
+
+    public function setting()
+    {
+        return new Setting($this);
+    }
 
     /**
      * 发送验证邮件
